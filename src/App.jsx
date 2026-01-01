@@ -1,10 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
-const Card = ({cardName}) => {
+const Card = ({title}) => {
+
+    const [hasLiked, setHasLiked] = useState(false);
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        console.log(`${title} has been liked: ${hasLiked}`);
+    }, [title, hasLiked]);
+
     return (
-        <div>
-            <h2>{cardName} Card Component</h2>
+        <div className="card" onClick={() => setCount((prevState) => prevState + 1)}>
+            <h2>{title} {count ? `- ${count} ` : null}</h2>
+
+            <button onClick={() => setHasLiked(!hasLiked)}>
+                {hasLiked ? 'Liked' : 'Like'}
+            </button>
         </div>
     )
 }
@@ -12,11 +24,13 @@ const Card = ({cardName}) => {
 function App() {
   return (
   <>
-      <h2>Functional Arrow Component</h2>
+      <div className="card-container">
+          <Card title="Casablanca" />
+          <Card title="The Godfather"/>
+          <Card title="Once Upon a Time in the West"/>
+          <Card title="The Big Sleep"/>
+      </div>
 
-      <Card cardName="tempCard" />
-      <Card />
-      <Card />
   </>
   )
 }
