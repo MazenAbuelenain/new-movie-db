@@ -3,7 +3,8 @@ import Search from "./Components/Search.jsx";
 import Spinner from "./Components/Spinner.jsx";
 import MovieCard from "./Components/MovieCard.jsx";
 import {useDebounce} from "react-use";
-import {updateSearchCount} from "./appwrite.js";
+import {getTrendingMovies, updateSearchCount} from "./appwrite.js";
+import MoviePage from "./Components/MoviePage.jsx";
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -26,6 +27,9 @@ const App = () => {
     const [movieList, setMovieList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+    const [trendingMovies, setTrendingMovies] = useState([]);
+    const [toggleModal, setToggleModal] = useState(false);
+    const [selectedMovie, setSelectedMovie] = useState({});
 
     useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm])
 
@@ -60,6 +64,30 @@ const App = () => {
         }
     };
 
+    const loadTrendingMovies = async () => {
+        try{
+            const movies = await getTrendingMovies();
+
+            setTrendingMovies(movies);
+        } catch(error){
+            console.log(`Error fetching trending movies: ${error}`);
+        }
+    }
+
+    const openMoviePage = (movie) => {
+        setSelectedMovie(movie);
+        setToggleModal(!toggleModal);
+        console.log('movie clicked');
+    }
+
+    const onClose = () => {
+        setToggleModal(false);
+    }
+
+    useEffect(() => {
+        loadTrendingMovies();
+    }, []);
+
     useEffect(() => {
         fetchMovies(debouncedSearchTerm);
     }, [debouncedSearchTerm]);
@@ -77,9 +105,23 @@ const App = () => {
                     <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 </header>
 
+                {trendingMovies.length > 0 && (
+                    <section className='trending'>
+                        <h2>Trending Movies</h2>
+
+                        <ul>
+                            {trendingMovies.map((movie, index) => (
+                                <li key={movie.$id}>
+                                    <p>{index + 1}</p>
+                                    <img src={movie.poster_url} alt={movie.title} />
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                )}
 
                 <section className='all-movies'>
-                    <h2 className='mt-40'>All Movies</h2>
+                    <h2>All Movies</h2>
 
                     {isLoading ? (
                         <Spinner />
@@ -88,12 +130,14 @@ const App = () => {
                     ) : (
                         <ul>
                             {movieList.map((movie) => (
-                                <MovieCard key={movie.id} className='text-white' movie={movie}></MovieCard>
+                                <MovieCard key={movie.id} className='text-white' movie={movie} onClick={() => openMoviePage(movie)}></MovieCard>
                                 ))}
                         </ul>
                     )}
                 </section>
             </div>
+
+            {toggleModal && <MoviePage movie={selectedMovie} onClose={onClose}/>}
         </main>
     </>
     )

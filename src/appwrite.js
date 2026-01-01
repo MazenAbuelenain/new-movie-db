@@ -26,6 +26,7 @@ export const updateSearchCount = async (searchTerm, movie) => {
                 count: doc.count + 1
             });
         }
+        // 3. If it doesn't, create a new document with the search term and count of 1
         else
         {
             await database.createDocument(DATABASE_ID, TABLE_ID, ID.unique(),
@@ -40,7 +41,17 @@ export const updateSearchCount = async (searchTerm, movie) => {
     } catch(error) {
         console.log(error);
     }
+}
 
-    // 3. If it doesn't, create a new document with the search term and count of 1
+export const getTrendingMovies = async () => {
+    try{
+        const result = await database.listDocuments(DATABASE_ID, TABLE_ID, [
+            Query.limit(5),
+            Query.orderDesc(''),
+        ])
 
+        return result.documents;
+    } catch(error) {
+        console.log(error);
+    }
 }

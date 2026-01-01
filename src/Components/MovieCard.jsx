@@ -1,8 +1,8 @@
 import React from 'react'
 
-const MovieCard = ({ movie: {title, vote_average, poster_path, original_language, release_date} }) => {
+const MovieCard = ({ movie: {title, vote_average, poster_path, original_language, release_date}, onClick}) => {
     return (
-        <div className='movie-card'>
+        <div className='movie-card' onClick={onClick}>
             <img src={poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : './No-Poster.png'} alt={title} />
 
             <div className='mt-4'>
