@@ -1,38 +1,34 @@
-import { useState, useEffect } from 'react'
-import './App.css'
+import React, {useState, useEffect} from 'react'
+import Search from "./Components/Search.jsx";
 
-const Card = ({title}) => {
+const API_BASE_URL = 'https://api.themoviedb.org/3';
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
-    const [hasLiked, setHasLiked] = useState(false);
-    const [count, setCount] = useState(0);
+const App = () => {
+
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        console.log(`${title} has been liked: ${hasLiked}`);
-    }, [title, hasLiked]);
+
+    }, []);
 
     return (
-        <div className="card" onClick={() => setCount((prevState) => prevState + 1)}>
-            <h2>{title} {count ? `- ${count} ` : null}</h2>
+    <>
+        <main>
 
-            <button onClick={() => setHasLiked(!hasLiked)}>
-                {hasLiked ? 'Liked' : 'Like'}
-            </button>
-        </div>
+            <div className="pattern" />
+
+            <div className="wrapper">
+                <header>
+                    <img src="./hero-img.png" alt="Hero Banner" />
+                    <h1>Find <span className="text-gradient">Movies</span> You'll Enjoy Without the Hassle</h1>
+                </header>
+
+                <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                <h1 className="text-white">{searchTerm}</h1>
+            </div>
+        </main>
+    </>
     )
 }
-
-function App() {
-  return (
-  <>
-      <div className="card-container">
-          <Card title="Casablanca" />
-          <Card title="The Godfather"/>
-          <Card title="Once Upon a Time in the West"/>
-          <Card title="The Big Sleep"/>
-      </div>
-
-  </>
-  )
-}
-
 export default App
