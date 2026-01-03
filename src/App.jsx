@@ -130,14 +130,17 @@ const App = () => {
                     ) : (
                         <ul>
                             {movieList.map((movie) => (
-                                <MovieCard key={movie.id} className='text-white' movie={movie} onClick={() => openMoviePage(movie)}></MovieCard>
+                                <MovieCard key={movie.id}
+                                           className='text-white'
+                                           movie={movie}
+                                           onClick={(movie) => openMoviePage(movie)}></MovieCard>
                                 ))}
                         </ul>
                     )}
                 </section>
             </div>
 
-            {toggleModal && <MoviePage movieData={selectedMovie} onClose={onClose}/>}
+            {toggleModal && <MoviePage movie={selectedMovie} onClose={onClose}/>}
         </main>
     </>
     )

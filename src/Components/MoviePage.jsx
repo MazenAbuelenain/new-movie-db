@@ -17,12 +17,14 @@ const API_OPTIONS = {
 
 const MoviePage = ({movie, onClose}) => {
 
-    const [movieData, setMovieData] = useState(movieData);
+    const [movieData, setMovieData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    if(!movieData) return null;
+    console.log('Movie Id: ' + movie.id);
 
     useEffect(() => {
+        if(!movie) return null;
+
         const getMovieDetails = async () => {
             try{
                 const endpoint = `${API_BASE_URL}/movie/${movie.id}`;
@@ -40,6 +42,18 @@ const MoviePage = ({movie, onClose}) => {
 
         getMovieDetails();
     }, [movie.id])
+
+    if(!movie) return null;
+
+    if (isLoading) {
+        return (
+            <div className='movie-page'>
+                <div className='modal-container flex items-center justify-center'>
+                    <p className='text-white text-xl'>Loading...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className='movie-page' onClick={onClose}>
@@ -62,7 +76,7 @@ const MoviePage = ({movie, onClose}) => {
                             <span className='text-yellow-400'>
                                 <img src="./star.svg" alt="Rating" />
                             </span>
-                            {movieData.vote_average?.toFixed()/110} ({movieData.vote_count})
+                            {movieData.vote_average?.toFixed(1)} ({movieData.vote_count})
                         </div>
                         <div className='badge-rating'>
                             {movieData.popularity?.toFixed(0)}
@@ -110,7 +124,7 @@ const MoviePage = ({movie, onClose}) => {
 
                     <div className='info-row'>
                         <span className='label'>Budget</span>
-                        <span className='value'>{movieData.budget ? ${movieData.budget / 1000000).toFixed(1)} : 'N/A'} million</span>
+                        <span className='value'>{movieData.budget ? `$${(movieData.budget / 1000000).toFixed(1)}` : 'N/A'} million</span>
                     </div>
 
                     <div className='info-row'>

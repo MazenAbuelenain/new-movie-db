@@ -144,7 +144,7 @@
     @apply fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4;
 
     & .modal-container {
-      @apply bg-[#0b091a] border border-white/10 rounded-[32px] max-w-5xl w-full max-h-[92vh] overflow-y-auto relative p-10 shadow-2xl;
+      @apply bg-[#0b091a] border border-white/10 rounded-[32px] max-w-5xl w-full max-h-[92vh] overflow-y-auto relative p-10 shadow-2xl hide-scrollbar;
     }
 
     & .header-row {
