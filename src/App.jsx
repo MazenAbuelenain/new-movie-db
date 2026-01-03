@@ -137,7 +137,7 @@ const App = () => {
                 </section>
             </div>
 
-            {toggleModal && <MoviePage movie={selectedMovie} onClose={onClose}/>}
+            {toggleModal && <MoviePage movieData={selectedMovie} onClose={onClose}/>}
         </main>
     </>
     )
