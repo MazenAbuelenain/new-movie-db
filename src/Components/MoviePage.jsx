@@ -104,7 +104,13 @@ const MoviePage = ({movie, onClose}) => {
                                 <span key={g.id} className='genre-chip'>{g.name}</span>
                             )) || 'Loading...'}
                         </div>
-                        <button className='visit-btn ml-auto'>Visit Homepage →</button>
+                        <a className='visit-btn ml-auto'
+                           href={movieData.homepage}
+                           target='_blank'
+                           rel='noreferrer'
+                        >
+                            Visit Homepage →
+                        </a>
                     </div>
 
                     <div className='info-row'>
